@@ -6,24 +6,28 @@ namespace lma
 
   template<class Float> struct LM
   {
+    template<typename FloatPrecision> struct SetFloating
+    {
+      using type = LM<FloatPrecision>;
+    };
     int max_iteration = 10;
     Float lambda = Float(0.001);
     Float eps = Float(0.99999);
     
-    std::pair<Float,int> error1,error2;
-    
+    std::pair<Float,int> error1 = {0,0},error2 = {0,0};
+    int nb_iteration = 0;
     Float cost1() const { return error1.first; }
     Float cost2() const { return error2.first; }
     
     Float rms1() const { return std::sqrt(cost1() / Float(error1.second)); }
     Float rms2() const { return std::sqrt(cost2() / Float(error2.second)); }
     
-    size_t nb_iteration = 0;
+    
     
     bool stop() const { return (nb_iteration == max_iteration) || (is_better() && (rms2() > eps * rms1())); }
     bool is_better() const { return cost2() < cost1(); }
 
-    void update(std::pair<Float,int> current_error, const auto& eq)
+    void update(std::pair<Float,int> current_error, const auto&)
     {
       if (is_better())// was better
         error1 = error2;
@@ -37,6 +41,11 @@ namespace lma
   
   template<class Float> struct LMN : LM<Float> // variante de Nielsen
   {
+    template<typename FloatPrecision> struct SetFloating
+    {
+      using type = LMN<FloatPrecision>;
+    };
+
     LMN(auto ... inits):LM<Float>{inits...} {}
     using LM<Float>::is_better;
     using LM<Float>::error1;
@@ -74,6 +83,6 @@ namespace lma
 
 
   template<class Float> struct Name<LM<Float>> { static std::string name() { return std::string("LM<") + lma::name<Float>() + ">"; } };
-  template<class Float> struct Name<LMN<Float>> { static std::string name() { return std::string("LM-Nielsen<") + lma::name<Float>() + ">"; } };
+  template<class Float> struct Name<LMN<Float>> { static std::string name() { return std::string("LM-N<") + lma::name<Float>() + ">"; } };
     
 }

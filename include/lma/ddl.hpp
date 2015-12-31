@@ -4,7 +4,7 @@ namespace lma
 {
   template<class P, int ddl> struct DDL
   {
-    static void apply_increment(P& p, auto delta[ddl])
+    static void apply_increment(P& /*p*/, auto /*delta*/[ddl])
     {
     }
   };
@@ -13,7 +13,7 @@ namespace lma
   {
     int ddl = 0;
     
-    static void apply_increment(P& p, auto* delta)
+    static void apply_increment(P& /*p*/, auto* /*delta*/)
     {
     }
   };

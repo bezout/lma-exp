@@ -94,7 +94,7 @@ struct Verbose: DefaultVerbose
   }
 
   template<class Solver, class Algo>
-  void at_end_bundle_adjustment(const Solver& s, const Algo& algo) const
+  void at_end_bundle_adjustment(const Solver& s, const Algo&) const
   {
     static const boost::format format("\e[36m%-21s: %g\e[m\n");
 
@@ -128,7 +128,7 @@ private:
   }};
 */
   template<class Solver, class LM>
-  void print_iteration(const Solver& s, const LM& lm, const char *color) const
+  void print_iteration(const Solver&, const LM& lm, const char *color) const
   {
     std::cerr
     << boost::format("%s%3d  %7.1g  %10.5g  %+11.5g  %10.5g  %+11.5g  %8.3g  %8.3g\e[m")

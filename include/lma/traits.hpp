@@ -3,11 +3,12 @@
 #include "exceptions.hpp"
 #include <string>
 #include <typeinfo>
+#include <type_traits>
 
 namespace lma
 {
   struct clement_type{};
-  void clement(clement_type){}
+  inline void clement(clement_type){}
 
   template<class T, class Enable = void> struct Name
   {
@@ -25,4 +26,6 @@ namespace lma
   struct Adl{};
 
   template<class> struct Type {};
+
+  template<class Float> using EnableIfIsFloating = typename std::enable_if<std::is_floating_point<Float>::value>::type*;
 }
