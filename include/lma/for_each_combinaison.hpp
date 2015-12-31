@@ -11,21 +11,21 @@ namespace brigand
   brigand::size_t<0> zero {};
   brigand::size_t<1> one {};
 
-  template<class ... T> transform<list<T...>,type_<_1>> remove_type(T...) { return {}; }
-  template<class V, V v1, V v2> std::integral_constant<V,v1+v2> plus_(std::integral_constant<V,v1>, std::integral_constant<V,v2>) { return {}; }
+  template<typename ... T> transform<list<T...>,type_<_1>> remove_type(T...) { return {}; }
+  template<typename V, V v1, V v2> std::integral_constant<V,v1+v2> plus_(std::integral_constant<V,v1>, std::integral_constant<V,v2>) { return {}; }
 
-  template<class V, V v> std::true_type equal_(std::integral_constant<V,v>, std::integral_constant<V,v>) { return {}; }
-  template<class V, V v1, V v2> std::false_type equal_(std::integral_constant<V,v1>, std::integral_constant<V,v2>) { return {}; }
+  template<typename V, V v> std::true_type equal_(std::integral_constant<V,v>, std::integral_constant<V,v>) { return {}; }
+  template<typename V, V v1, V v2> std::false_type equal_(std::integral_constant<V,v1>, std::integral_constant<V,v2>) { return {}; }
 
-  template<class V, V v> std::false_type not_equal_(std::integral_constant<V,v>, std::integral_constant<V,v>) { return {}; }
-  template<class V, V v1, V v2> std::true_type not_equal_(std::integral_constant<V,v1>, std::integral_constant<V,v2>) { return {}; }
+  template<typename V, V v> std::false_type not_equal_(std::integral_constant<V,v>, std::integral_constant<V,v>) { return {}; }
+  template<typename V, V v1, V v2> std::true_type not_equal_(std::integral_constant<V,v1>, std::integral_constant<V,v2>) { return {}; }
 
-  template<class L, class I> brigand::at<L,I> at_(L, I) { return {}; }
+  template<typename L, typename I> brigand::at<L,I> at_(L, I) { return {}; }
   void for_each(auto L, auto f) { brigand::for_each<decltype(L)>(f); }
 
-  template<class ... L> brigand::size_t<brigand::size<brigand::list<L...>>::value> size_(brigand::list<L...>) { return {};}
-  template<class ... L> brigand::list<L...> list_(L...) { return {};}
-  template<class ... T> void expand(auto f, list<T...>) { f(T{}...); }
+  template<typename ... L> brigand::size_t<brigand::size<brigand::list<L...>>::value> size_(brigand::list<L...>) { return {};}
+  template<typename ... L> brigand::list<L...> list_(L...) { return {};}
+  template<typename ... T> void expand(auto f, list<T...>) { f(T{}...); }
 }
 
 namespace lma

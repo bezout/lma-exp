@@ -6,7 +6,7 @@
 
 namespace lma
 {
-  template<class T>
+  template<typename T>
   std::string to_string(const T& o)
   {
     std::stringstream str;
@@ -16,7 +16,7 @@ namespace lma
   
   struct Couleur
   {
-    template<class T> std::string operator()(const T& o) const
+    template<typename T> std::string operator()(const T& o) const
     { return "\033[" + lma::to_string(o) + "m"; }
 
     std::string operator()() const { return "\033[0m"; }

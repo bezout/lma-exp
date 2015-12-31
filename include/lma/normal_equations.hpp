@@ -6,7 +6,7 @@
 namespace lma
 {
   
-  template<class Float, class InfoFunctor, int NbInstanceOfFunctor_, int NbInstanceOfParameters_>
+  template<typename Float, typename InfoFunctor, int NbInstanceOfFunctor_, int NbInstanceOfParameters_>
   struct NormalEquation
   {
 

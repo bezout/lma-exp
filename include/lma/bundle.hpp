@@ -7,7 +7,7 @@
 namespace lma
 {
   
-  template<class Functor, class Parameters, int NbInstanceOfFunctor_, int NbInstanceOfParameters_> struct Data
+  template<typename Functor, typename Parameters, int NbInstanceOfFunctor_, int NbInstanceOfParameters_> struct Data
   {
     using InfoFunctor = AnalyseFunctor<Functor>;
     using Residual = typename InfoFunctor::Residual;
@@ -75,7 +75,7 @@ namespace lma
         functors[i].first.analytical(*functors[i].second,jacobians.block(i,0,ErreurSize,DDL));
     }
     
-    template<class CastResidual>
+    template<typename CastResidual>
     int compute_error(auto& errors, const Type<CastResidual>&) const
     {
       int success = 0;

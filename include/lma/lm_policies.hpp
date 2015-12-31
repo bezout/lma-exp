@@ -4,7 +4,7 @@
 namespace lma
 {
 
-  template<class Float> struct LM
+  template<typename Float> struct LM
   {
     template<typename FloatPrecision> struct SetFloating
     {
@@ -39,7 +39,7 @@ namespace lma
     }
   };
   
-  template<class Float> struct LMN : LM<Float> // variante de Nielsen
+  template<typename Float> struct LMN : LM<Float> // variante de Nielsen
   {
     template<typename FloatPrecision> struct SetFloating
     {
@@ -82,7 +82,7 @@ namespace lma
   };
 
 
-  template<class Float> struct Name<LM<Float>> { static std::string name() { return std::string("LM<") + lma::name<Float>() + ">"; } };
-  template<class Float> struct Name<LMN<Float>> { static std::string name() { return std::string("LM-N<") + lma::name<Float>() + ">"; } };
+  template<typename Float> struct Name<LM<Float>> { static std::string name() { return std::string("LM<") + lma::name<Float>() + ">"; } };
+  template<typename Float> struct Name<LMN<Float>> { static std::string name() { return std::string("LM-N<") + lma::name<Float>() + ">"; } };
     
 }

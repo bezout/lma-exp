@@ -10,12 +10,12 @@ namespace lma
   struct clement_type{};
   inline void clement(clement_type){}
 
-  template<class T, class Enable = void> struct Name
+  template<typename T, typename Enable = void> struct Name
   {
     static std::string name() { return typeid(T).name();}
   };
 
-  template<class T> std::string name()
+  template<typename T> std::string name()
   {
     return Name<T>::name();
   }
@@ -25,7 +25,7 @@ namespace lma
    
   struct Adl{};
 
-  template<class> struct Type {};
+  template<typename> struct Type {};
 
-  template<class Float> using EnableIfIsFloating = typename std::enable_if<std::is_floating_point<Float>::value>::type*;
+  template<typename Float> using EnableIfIsFloating = typename std::enable_if<std::is_floating_point<Float>::value>::type*;
 }

@@ -9,7 +9,7 @@
 namespace lma
 {
   
-  template<class Block, int Dimension> struct CreateMatrix
+  template<typename Block, int Dimension> struct CreateMatrix
   {
     using Matrix = Eigen::Matrix<typename Block::Scalar,Eigen::Dynamic,Eigen::Dynamic>;
   };
@@ -24,10 +24,10 @@ namespace lma
     using Matrix = Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic>;
   };
 
-  template<class Block, int Dimension>
+  template<typename Block, int Dimension>
   using Matrix = typename CreateMatrix<Block,Dimension>::Matrix;
   
-  template<class Block, int Dimension> struct CreateVector
+  template<typename Block, int Dimension> struct CreateVector
   {
     using Vector = Eigen::Matrix<typename Block::Scalar,Eigen::Dynamic,1>;
   };
@@ -42,10 +42,10 @@ namespace lma
     using Vector = Eigen::Matrix<double,Eigen::Dynamic,1>;
   };
 
-  template<class Block, int Dimension>
+  template<typename Block, int Dimension>
   using Vector = typename CreateVector<Block,Dimension>::Vector;
   
-  template<class Mat, class Float>
+  template<typename Mat, typename Float>
   Mat& damping(Mat& mat, const Float& lambda)
   {
     for(int i = 0 ; i < mat.cols() ; ++i)
@@ -54,7 +54,7 @@ namespace lma
   }
  
   
-  template<class Matrix, class Vector>
+  template<typename Matrix, typename Vector>
   constexpr Vector llt(Matrix u, Vector x, int size)
   {
     for(int i = 0 ; i < size ; ++i)

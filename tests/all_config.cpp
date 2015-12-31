@@ -43,7 +43,7 @@ Result test_static(auto lm, auto verbose)
   };
 }
 
-template<class ... Options> void launch_tests(auto back_inserter, Options ... options)
+template<typename ... Options> void launch_tests(auto back_inserter, Options ... options)
 {
   back_inserter = test_dynamic(options...);
   back_inserter++;
@@ -51,7 +51,7 @@ template<class ... Options> void launch_tests(auto back_inserter, Options ... op
   back_inserter ++;
 }
 
-template<template<class> class Policy, class Float, class Verbose>
+template<template<typename> typename Policy, typename Float, typename Verbose>
 void call_solver(Type<Policy<Float>>, Verbose verbose, auto back_inserter)
 {
   launch_tests(back_inserter, Policy<Float>{rosenbrock_nb_iteration,Float(1.)},verbose);

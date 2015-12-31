@@ -13,7 +13,7 @@
 namespace lma
 {
 
-  template<class Functor, int NbInstanceOfFunctor=-1, int NbInstanceOfParameters=-1> struct Solver
+  template<typename Functor, int NbInstanceOfFunctor=-1, int NbInstanceOfParameters=-1> struct Solver
   {
     template<int I> struct SetNbInstanceOfFunctors
     {
@@ -40,7 +40,7 @@ namespace lma
       return *this;
     }
     
-    template<template<class Policy> class Policy, class Float, class Verbose=DefaultVerbose>
+    template<template<typename Policy> typename Policy, typename Float, typename Verbose=DefaultVerbose>
     Solver& solve(Policy<Float> lm, Verbose verbose = Verbose{})
     {
       using NormalEq = NormalEquation<Float,InfoFunctor,NbInstanceOfFunctor,NbInstanceOfParameters>;
@@ -80,7 +80,7 @@ namespace lma
     }
   };
   
-template<class F, int I, int J> struct Name<Solver<F,I,J>>
+template<typename F, int I, int J> struct Name<Solver<F,I,J>>
 {
   static std::string name(){ return std::string("Solver<") + lma::name<F>() + ",#F(" + std::to_string(I) + "),#P(" + std::to_string(J) + ")>"; }  
 };

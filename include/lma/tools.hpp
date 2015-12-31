@@ -2,7 +2,7 @@
 
 namespace lma
 {
-  template<class From, class To> struct CastResidual
+  template<typename From, typename To> struct CastResidual
   {
     From& original;
     To temporary;
@@ -11,7 +11,7 @@ namespace lma
     CastResidual(From& original_):original(original_) {}
   };
 
-  template<class From> struct CastResidual<From,From>
+  template<typename From> struct CastResidual<From,From>
   {
     From& original;
     From& data() { return original; }

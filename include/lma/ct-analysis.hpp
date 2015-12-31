@@ -2,13 +2,13 @@
 
 namespace lma
 {
-  template<class> struct AnalyseExtractFromType;
+  template<typename> struct AnalyseExtractFromType;
   
-  template<class Return, class F, class P, class R> struct AnalyseExtractFromType< Return (F::*) (const P&, R&) const >
+  template<typename Return, typename F, typename P, typename R> struct AnalyseExtractFromType< Return (F::*) (const P&, R&) const >
   {
     typedef P Parameters;
     typedef R Residual;
   };
 
-  template<class F> struct AnalyseFunctor : AnalyseExtractFromType<decltype(&F::operator())> {};
+  template<typename F> struct AnalyseFunctor : AnalyseExtractFromType<decltype(&F::operator())> {};
 }

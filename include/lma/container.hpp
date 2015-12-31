@@ -5,9 +5,9 @@
 
 namespace lma
 {
-  template<class T> using AlignedVector = std::vector<T,Eigen::aligned_allocator<T>>;
+  template<typename T> using AlignedVector = std::vector<T,Eigen::aligned_allocator<T>>;
   
-  template<class F, int Dimension>
+  template<typename F, int Dimension>
   struct Container
   {
     std::array<F,Dimension> data;
@@ -19,7 +19,7 @@ namespace lma
     F& operator[](size_t i) { assert( i < size() ); return data[i]; }
   };
   
-  template<class F>
+  template<typename F>
   struct Container<F,-1>
   {
     AlignedVector<F> data;
@@ -30,10 +30,10 @@ namespace lma
     F& operator[](size_t i) { assert( i < size() ); return data[i]; }
   };
   
-  template<class F, int Dimension> auto begin(const Container<F,Dimension>& container) { return container.data.begin(); }
-  template<class F, int Dimension> auto end(const Container<F,Dimension>& container) { return container.data.end(); }
+  template<typename F, int Dimension> auto begin(const Container<F,Dimension>& container) { return container.data.begin(); }
+  template<typename F, int Dimension> auto end(const Container<F,Dimension>& container) { return container.data.end(); }
   
-  template<class F, int Dimension> auto begin(Container<F,Dimension>& container) { return container.data.begin(); }
-  template<class F, int Dimension> auto end(Container<F,Dimension>& container) { return container.data.end(); }
+  template<typename F, int Dimension> auto begin(Container<F,Dimension>& container) { return container.data.begin(); }
+  template<typename F, int Dimension> auto end(Container<F,Dimension>& container) { return container.data.end(); }
   
 }

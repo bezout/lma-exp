@@ -8,27 +8,27 @@ namespace lma
 {
   struct DefaultVerbose
   {
-    template<class ... S>
+    template<typename ... S>
     void at_begin_bundle_adjustment(const S& ...) const {}
     
-    template<class ... S>
+    template<typename ... S>
     void at_begin_bundle_adjustment_iteration(const S&...) const {}
     
-    template<class ... S>
+    template<typename ... S>
     void at_end_bundle_adjustment_iteration(const S&...) const {}
     
-    template<class ... S>
+    template<typename ... S>
     void at_end_bundle_adjustment(const S&...) const {}
   };
 }
 
 namespace lma {
 
-template<class> struct LevMar;
+template<typename> struct LevMar;
 
 namespace internal {
 
-template<class Policy>
+template<typename Policy>
 static void print_stats(const LevMar<Policy> &a, const boost::format &format)
 {
   std::cerr
@@ -43,7 +43,7 @@ static void print_stats(const LevMar<Policy> &a, const boost::format &format)
 
 struct Verbose: DefaultVerbose
 {
-  template<class Solver, class Algorithm>
+  template<typename Solver, typename Algorithm>
   void at_begin_bundle_adjustment(Solver& s, const Algorithm& lm) const
   {
     clock_total.tic();
@@ -81,19 +81,19 @@ struct Verbose: DefaultVerbose
     print_iteration(s,lm,"");
   }
 
-  template<class Solver, class Algorithm>
+  template<typename Solver, typename Algorithm>
   void at_begin_bundle_adjustment_iteration(const Solver&, const Algorithm&) const
   {
     clock_iteration.tic();
   }
 
-  template<class Solver, class Algorithm, class NormalEquation>
+  template<typename Solver, typename Algorithm, typename NormalEquation>
   void at_end_bundle_adjustment_iteration(const Solver& s, const Algorithm& lm, const NormalEquation& ) const
   {
     this->print_iteration(s,lm,lm.is_better() ? "\e[32m" : "\e[31m");
   }
 
-  template<class Solver, class Algo>
+  template<typename Solver, typename Algo>
   void at_end_bundle_adjustment(const Solver& s, const Algo&) const
   {
     static const boost::format format("\e[36m%-21s: %g\e[m\n");
@@ -119,15 +119,15 @@ private:
 
   mutable Tic clock_total, clock_iteration;
 /*
-  struct print_var { template<template<class, class> class Pair, class Key, class Value> void operator()(const Pair<Key, Value> &o) const {
+  struct print_var { template<template<typename, typename> typename Pair, typename Key, typename Value> void operator()(const Pair<Key, Value> &o) const {
     std::cerr << boost::format("%s (%d)\n") % ttt::name<Key>() %  o.second.size();
   }};
 
-  struct print_observation { template<template<class, class> class Pair, class Key, class Value> void operator()(const Pair<Key, Value> &o) const {
+  struct print_observation { template<template<typename, typename> typename Pair, typename Key, typename Value> void operator()(const Pair<Key, Value> &o) const {
     std::cerr << boost::format("%s (\e[1m%d\e[21m)\n") % ttt::name<Key>() % o.second.size();
   }};
 */
-  template<class Solver, class LM>
+  template<typename Solver, typename LM>
   void print_iteration(const Solver&, const LM& lm, const char *color) const
   {
     std::cerr
@@ -147,7 +147,7 @@ private:
 
 struct VerboseNormalEquation : Verbose
 {
-  template<class Solver, class Algorithm, class NormalEquation>
+  template<typename Solver, typename Algorithm, typename NormalEquation>
   void at_end_bundle_adjustment_iteration(const Solver& s, const Algorithm& lm, const NormalEquation& ne) const
   {
     Verbose::at_end_bundle_adjustment_iteration(s,lm,ne);

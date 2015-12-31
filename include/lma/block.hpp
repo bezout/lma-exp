@@ -6,85 +6,85 @@
 
 namespace lma
 {
-  template<class Float, int I, int J> struct CreateBlock
+  template<typename Float, int I, int J> struct CreateBlock
   {
     using Block = Eigen::Matrix<Float,I,J>;
   };
   
   
-  template<class Float> struct CreateBlock<Float,1,1>
+  template<typename Float> struct CreateBlock<Float,1,1>
   {
     using Block = Float;
   };
   
   /*
-  template<class Float, int J> struct CreateBlock<Float,0,J>
+  template<typename Float, int J> struct CreateBlock<Float,0,J>
   {
     using Block = Eigen::Matrix<Float,Eigen::Dynamic,J>;
   };
   
-  template<class Float, int I> struct CreateBlock<Float,I,0>
+  template<typename Float, int I> struct CreateBlock<Float,I,0>
   {
     using Block = Eigen::Matrix<Float,I,Eigen::Dynamic>;
   };
   
-  template<class Float> struct CreateBlock<Float,0,0>
+  template<typename Float> struct CreateBlock<Float,0,0>
   {
     using Block = Eigen::Matrix<Float,Eigen::Dynamic,Eigen::Dynamic>;
   };
   */
   
-  template<class Float, int I, int J> 
+  template<typename Float, int I, int J> 
   using Block = typename CreateBlock<Float,I,J>::Block;
 
 
   
 
-  template<class Float>
+  template<typename Float>
   Float squared_norm(const Float& value, EnableIfIsFloating<Float> = 0) { return value * value ; }
 
   //inline double squared_norm(const double& value) { return value * value ; }
 
-  template<class Float, int I, int J>
+  template<typename Float, int I, int J>
   Float squared_norm(const Eigen::Matrix<Float,I,J>& mat) { return mat.squaredNorm() ; }
 
-  template<class Float, int I, int J>
+  template<typename Float, int I, int J>
   constexpr int cols(const Eigen::Matrix<Float,I,J>& mat)
   {
     return J;
   }
   
-  template<class Float, int I, int J>
+  template<typename Float, int I, int J>
   constexpr int rows(const Eigen::Matrix<Float,I,J>& mat)
   {
     return I;
   }
   
-  template<class Float, int I>
+  template<typename Float, int I>
   int cols(const Eigen::Matrix<Float,I,Eigen::Dynamic>& mat)
   {
     return mat.cols();
   }
   
-  template<class Float, int J>
+  template<typename Float, int J>
   int rows(const Eigen::Matrix<Float,Eigen::Dynamic,J>& mat)
   {
     return mat.rows();
   }
   
-  template<class Float, int I, int J>
+  template<typename Float, int I, int J>
   void disp_size(const Eigen::Matrix<Float,I,J>& mat, std::string name)
   {
     std::cout << " Size of " << name << " : " << rows(mat) << ", " << cols(mat) << std::endl;
   }
   
-  template<class Float>
+  template<typename Float>
   void disp_size(const Float&, std::string name)//, EnableIfIsFloating<Float>=0)
   {
     std::cout << " Size of " << name << " : 1 " << std::endl;
   }
   
-  template<class Float, int I, int J>
+  template<typename Float, int I, int J>
   struct Name<Eigen::Matrix<Float,I,J>>
   {
     static std::string name()
