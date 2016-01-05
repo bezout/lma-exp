@@ -13,37 +13,43 @@
 namespace lma
 {
 
-  template<typename Functor, int NbInstanceOfFunctor=-1, int NbInstanceOfParameters=-1> struct Solver
+  
+
+  //template<typename F, typename O = Option()> struct Solver;
+
+  template<typename Functors, typename Options = Options()>//int NbInstanceOfFunctor=-1, int NbInstanceOfParameters=-1>
+  struct Solver//<Functors(F...),Options>
   {
+    static constexpr int NbInstanceOfFunctor = -1;
+    static constexpr int NbInstanceOfParameters = -1;
+    /*
     template<int I> struct SetNbInstanceOfFunctors
     {
-      using type = Solver<Functor,I,NbInstanceOfParameters>;
+      using type = Solver<Functors...,Int<I>,NbInstanceOfParameters>;
     };
     
     template<int I> struct SetNbInstanceOfParameters
     {
-      using type = Solver<Functor,NbInstanceOfFunctor,I>;
+      using type = Solver<Functors...,NbInstanceOfFunctor,Int<I>>;
     };
-    
+    */
     
     double initial_cost, final_cost;
-    using InfoFunctor = AnalyseFunctor<Functor>;
-    using Parameters  = typename InfoFunctor::Parameters;
-    using Residual    = typename InfoFunctor::Residual;
-    using Bundle      = Data<Functor,Parameters,NbInstanceOfFunctor,NbInstanceOfParameters>;
+    //using InfoFunctor = AnalyseFunctor<Functor>;
+    using Bundle      = Data<Functors,Options>;
     
     Bundle bundle;
     
-    Solver& add(const Functor& f_, Parameters* parameters_)
+    Solver& add(const auto& f_, auto* parameters_)
     {
       bundle.add(f_,parameters_);
       return *this;
     }
     
-    template<template<typename Policy> typename Policy, typename Float, typename Verbose=DefaultVerbose>
+    template<template<typename> typename Policy, typename Float, typename Verbose=DefaultVerbose>
     Solver& solve(Policy<Float> lm, Verbose verbose = Verbose{})
     {
-      using NormalEq = NormalEquation<Float,InfoFunctor,NbInstanceOfFunctor,NbInstanceOfParameters>;
+      using NormalEq = NormalEquation<Float,Functors,Options>;
       NormalEq normal_equation;
       
       bundle.update();
@@ -75,14 +81,14 @@ namespace lma
       
       final_cost = std::min(lm.cost1(),lm.cost2());
       verbose.at_end_bundle_adjustment(*this,lm);
-      
       return *this;
     }
   };
   
-template<typename F, int I, int J> struct Name<Solver<F,I,J>>
+template<typename ... X> struct Name<Solver<X...>>
 {
-  static std::string name(){ return std::string("Solver<") + lma::name<F>() + ",#F(" + std::to_string(I) + "),#P(" + std::to_string(J) + ")>"; }  
+  static std::string name(){ return std::string("Solver<...>"); }
+  //static std::string name(){ return std::string("Solver<") + lma::name<F>() + ",#F(" + std::to_string(I) + "),#P(" + std::to_string(J) + ")>"; }  
 };
 
 

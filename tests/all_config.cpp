@@ -17,7 +17,7 @@ Result test_dynamic(auto lm, auto verbose)
   return 
   {
     name_algo,
-    Solver<Rosenbrock>()
+    Solver<Functors(Rosenbrock)>()
     .add(Rosenbrock{1},&parameters)
     .add(Rosenbrock{2},&parameters)
     .add(Rosenbrock{3},&parameters)
@@ -34,7 +34,7 @@ Result test_static(auto lm, auto verbose)
   return
   {
     name_algo,
-    Solver<Rosenbrock>::SetNbInstanceOfFunctors<3>::type::SetNbInstanceOfParameters<1>::type()
+    Solver<Functors(Rosenbrock)>()//::SetNbInstanceOfFunctors<3>::type::SetNbInstanceOfParameters<1>::type()
     .add(Rosenbrock{1},&parameters)
     .add(Rosenbrock{2},&parameters)
     .add(Rosenbrock{3},&parameters)
@@ -45,10 +45,8 @@ Result test_static(auto lm, auto verbose)
 
 template<typename ... Options> void launch_tests(auto back_inserter, Options ... options)
 {
-  back_inserter = test_dynamic(options...);
-  back_inserter++;
-  back_inserter = test_static(options...);
-  back_inserter ++;
+  back_inserter++ = test_dynamic(options...);
+  back_inserter++ = test_static(options...);
 }
 
 template<template<typename> typename Policy, typename Float, typename Verbose>

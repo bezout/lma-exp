@@ -36,14 +36,11 @@ namespace lma
   
   template<typename Float, int I, int J> 
   using Block = typename CreateBlock<Float,I,J>::Block;
-
-
   
 
   template<typename Float>
   Float squared_norm(const Float& value, EnableIfIsFloating<Float> = 0) { return value * value ; }
 
-  //inline double squared_norm(const double& value) { return value * value ; }
 
   template<typename Float, int I, int J>
   Float squared_norm(const Eigen::Matrix<Float,I,J>& mat) { return mat.squaredNorm() ; }

@@ -7,7 +7,7 @@ using namespace lma;
 int main()
 {
   Parameters parameters {0.9,0.9};
-  Solver<Rosenbrock>()
+  Solver<Functors(Rosenbrock)>()
     .add(Rosenbrock{1},&parameters)
     .add(Rosenbrock{2},&parameters)
     .add(Rosenbrock{3},&parameters)

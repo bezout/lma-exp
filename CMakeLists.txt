@@ -11,11 +11,19 @@ set(CMAKE_CXX_FLAGS "-std=c++1y -Wall -Wextra -Wold-style-cast -isystem/usr/incl
 
 include_directories("include" ${EIGEN3_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 
-set(test_files tests/simple.cpp tests/all_config.cpp)
+set(test_files
+	tests/simple.cpp
+	tests/all_config.cpp
+	tests/functors_to_parameters.cpp
+	tests/functors_to_relations.cpp)
 
 add_executable(lma_test ${test_files})
 target_link_libraries(lma_test ${Boost_LIBRARIES})
 add_test(lma lma_test)
+
+add_executable(bundle tests/bundle.cpp)
+target_link_libraries(bundle ${Boost_LIBRARIES})
+add_test(lma_bundle bundle)
 
 add_executable(dev-test tests/dev-test)
 target_link_libraries(dev-test ${Boost_LIBRARIES})

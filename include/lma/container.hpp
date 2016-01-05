@@ -2,6 +2,12 @@
 
 #include <array>
 #include <vector>
+#include <Eigen/StdVector>// inclure que le fichier utile
+#include "traits.hpp"
+#include "tag.hpp"
+
+#include "tuple_traits.hpp"
+
 
 namespace lma
 {
@@ -36,4 +42,10 @@ namespace lma
   template<typename F, int Dimension> auto begin(Container<F,Dimension>& container) { return container.data.begin(); }
   template<typename F, int Dimension> auto end(Container<F,Dimension>& container) { return container.data.end(); }
   
+
+  template<typename X, int I> struct first_element<Container<X,I>>
+  {
+    using type = typename std::tuple_element<0,X>::type;
+  };
+
 }

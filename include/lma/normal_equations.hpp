@@ -2,19 +2,23 @@
 
 #include "container.hpp"
 #include "matrix.hpp"
+#include "tag.hpp"
 
 namespace lma
 {
   
-  template<typename Float, typename InfoFunctor, int NbInstanceOfFunctor_, int NbInstanceOfParameters_>
-  struct NormalEquation
-  {
+  template<typename ...> struct NormalEquation;
 
+
+  template<typename Float, typename ... F, typename ... O>
+  struct NormalEquation<Float,Functors(F...),Options(O...)>
+  {
+    using InfoFunctor = AnalyseFunctor<typename First<F...>::type>;
     using Parameters      = typename InfoFunctor::Parameters;
     using FunctorResidual = typename InfoFunctor::Residual;
    
-    static constexpr int NbInstanceOfFunctor = NbInstanceOfFunctor_;
-    static constexpr int NbInstanceOfParameters = NbInstanceOfParameters_;
+    static constexpr int NbInstanceOfFunctor = -1;
+    static constexpr int NbInstanceOfParameters = -1;
 
     // ddl pour un bloc de parametre
     static constexpr size_t NbParameters = size(Type<Parameters>{});

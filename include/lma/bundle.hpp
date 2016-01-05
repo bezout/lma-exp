@@ -1,87 +1,53 @@
 #pragma once
 
-#include "container.hpp"
-#include <map>
-#include <boost/function.hpp>
+#include "data.hpp"
+#include "tuple_traits.hpp"
 
 namespace lma
 {
-  
-  template<typename Functor, typename Parameters, int NbInstanceOfFunctor_, int NbInstanceOfParameters_> struct Data
+
+  template<typename> struct FunctorToContainer;
+  template<typename F, int Dimension> struct FunctorToContainer<Functor(F,Int<Dimension>)>
   {
-    using InfoFunctor = AnalyseFunctor<Functor>;
+    using InfoFunctor = AnalyseFunctor<F>;
     using Residual = typename InfoFunctor::Residual;
-    
-    static constexpr int NbInstanceOfFunctor = NbInstanceOfFunctor_;
-    static constexpr int NbInstanceOfParameters = NbInstanceOfParameters_;
+    using Parameters = typename InfoFunctor::Parameters;
 
-    static constexpr size_t DDL = size(Type<Parameters>{});
-    static constexpr size_t ErreurSize = size(Type<Residual>{});
-    
-    Container<std::pair<Functor,Parameters*>,NbInstanceOfFunctor> functors;
-    
-    
-    int total_parameters() const { return parameters.size() * DDL; }
-    int total_errors() const { return functors.size() * ErreurSize; }
-    
-    Container<Parameters*,NbInstanceOfParameters> parameters;
-    Container<Parameters,NbInstanceOfParameters> save_parameters;
-    
-    std::set<Parameters*> parameters_set;
-
-    void add(const Functor& f, Parameters* p)
-    {
-      functors.push_back(std::make_pair(f,p));
-      
-      
-      //TODO ADD F & P
-      if (find(parameters_set.begin(),parameters_set.end(),p)==parameters_set.end())
-      {
-        parameters_set.insert(p);
-        parameters.push_back(p);
-      }
-    }
-    
-    void update()
-    {
-      parameters_set.clear();
-      //TODO MAJ GRAPHE DE DONNEES
-    }
-    
-    void update_parameters(const auto& delta)
-    {
-      for(size_t i = 0 ; i < parameters.size() ; ++i)
-      {
-        apply_increment(*parameters[i],delta.template segment<DDL>(i*DDL).data());
-      }
-    }
-    
-    void save()
-    {
-      save_parameters.resize(parameters.size());
-      for(size_t i = 0 ; i < parameters.size() ; ++ i)
-        save_parameters[i] = *parameters[i];
-    }
-
-    void restore()
-    {
-      for(size_t i = 0 ; i < parameters.size() ; ++ i)
-        *parameters[i] = save_parameters[i];
-    }
-    
-    void call_analytical(auto& jacobians) const
-    {
-      for(size_t i = 0 ; i < functors.size() ; ++i)
-        functors[i].first.analytical(*functors[i].second,jacobians.block(i,0,ErreurSize,DDL));
-    }
-    
-    template<typename CastResidual>
-    int compute_error(auto& errors, const Type<CastResidual>&) const
-    {
-      int success = 0;
-      for(size_t i = 0 ; i < functors.size() ; ++i)
-        success += functors[i].first(*functors[i].second,CastResidual(errors[i]).data());
-      return success;
-    }
+    using Tuple = std::tuple<Functor,Parameters*>;
+    using type = Container<Tuple,Dimension>;
   };
+  
+  // F = Functor(Rosenbrock,Int<-1>)
+  template<class F> using ToContainer = typename FunctorToContainer<F>::type;
+
+	template<typename ... Functors>
+	struct Bundle
+	{
+    //using Tuple = std::tuple< typename CreateContainer<P>::type... >;
+    using FunctorsTuple = std::tuple< ToContainer<Functors>... >;
+
+    FunctorsTuple functors_tuple;
+
+    Bundle()
+    {
+      //std::cout << name<FunctorsTuple>() << std::endl;
+    }
+
+    
+
+    template<typename F, typename P>
+    Bundle& add(const F& f, P* parameters)
+    {
+      find_by_first_element<F>(functors_tuple).add(std::make_tuple(f,parameters));
+      return *this;
+    }
+	};
 }
+
+/*
+
+List of functors -> List of parameters
+                 -> List of relations
+
+
+*/
